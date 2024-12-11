@@ -7,6 +7,8 @@ public class InventarioServicio
 
     public InventarioServicio(InventarioRepositorio repositorio)
     {
+        // Validación defensiva para asegurar que el repositorio no sea nulo
+        if (repositorio == null) throw new ArgumentNullException(nameof(repositorio));
         this.repositorio = repositorio;
     }
 
@@ -29,8 +31,11 @@ public class InventarioServicio
 
     public void ListarProductos()
     {
+        // Validación defensiva para asegurar que el repositorio no sea nulo
+        if (repositorio == null) throw new InvalidOperationException("El repositorio no está inicializado.");
+
         var productos = repositorio.ObtenerTodos();
-        if (productos.Count() == 0)
+        if (productos.Count == 0)
         {
             Console.WriteLine("El inventario está vacío.");
         }
@@ -45,6 +50,7 @@ public class InventarioServicio
 
     public void BuscarProducto(string nombre)
     {
+        // Validación defensiva para asegurar que el nombre no sea nulo o vacío
         if (string.IsNullOrWhiteSpace(nombre)) throw new ArgumentException("El nombre no puede estar vacío.");
 
         var producto = repositorio.BuscarPorNombre(nombre);

@@ -18,17 +18,37 @@ class Program
             Console.Write("Selecciona una opción: ");
             var opcion = Console.ReadLine();
 
+            if (!new[] { "1", "2", "3", "4" }.Contains(opcion))
+            {
+                Console.WriteLine("Opción no válida.");
+                continue;
+            }
+
             switch (opcion)
             {
                 case "1":
                     Console.Write("Nombre del producto: ");
                     var nombre = Console.ReadLine();
 
+                    if (string.IsNullOrWhiteSpace(nombre))
+                    {
+                        Console.WriteLine("El nombre del producto no puede estar vacío.");
+                        break;
+                    }
+
                     Console.Write("Precio del producto: ");
-                    var precio = decimal.Parse(Console.ReadLine());
+                    if (!decimal.TryParse(Console.ReadLine(), out var precio))
+                    {
+                        Console.WriteLine("El precio ingresado no es válido.");
+                        break;
+                    }
 
                     Console.Write("Cantidad: ");
-                    var cantidad = int.Parse(Console.ReadLine());
+                    if (!int.TryParse(Console.ReadLine(), out var cantidad))
+                    {
+                        Console.WriteLine("La cantidad ingresada no es válida.");
+                        break;
+                    }
 
                     try
                     {
@@ -48,15 +68,16 @@ class Program
                 case "3":
                     Console.Write("Nombre del producto a buscar: ");
                     var nombreBusqueda = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(nombreBusqueda))
+                    {
+                        Console.WriteLine("El nombre del producto no puede estar vacío.");
+                        break;
+                    }
                     servicio.BuscarProducto(nombreBusqueda);
                     break;
 
                 case "4":
                     return;
-
-                default:
-                    Console.WriteLine("Opción no válida.");
-                    break;
             }
         }
     }
