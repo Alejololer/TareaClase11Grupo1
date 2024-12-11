@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 class Program
 {
@@ -23,7 +24,7 @@ class Program
             Console.Write("Selecciona una opción: ");
             var opcion = Console.ReadLine();
 
-            // Verifica si la opción ingresada es válida
+            // Verifica si la opción ingresada es válida (Programación defensiva)
             if (!new[] { "1", "2", "3", "4" }.Contains(opcion))
             {
                 Console.WriteLine("Opción no válida.");
@@ -38,7 +39,7 @@ class Program
                     Console.Write("Nombre del producto: ");
                     var nombre = Console.ReadLine();
 
-                    // Verifica si el nombre del producto no está vacío
+                    // Verifica si el nombre del producto no está vacío (Programación defensiva)
                     if (string.IsNullOrWhiteSpace(nombre))
                     {
                         Console.WriteLine("El nombre del producto no puede estar vacío.");
@@ -61,10 +62,12 @@ class Program
                         break;
                     }
 
-                    // Intenta agregar el producto al inventario
+                    // Intenta agregar el producto al inventario (Diseño por contrato)
                     try
                     {
                         servicio.AgregarProducto(nombre, precio, cantidad);
+                        // Aserción para verificar que el producto fue agregado correctamente
+                        servicio.BuscarProducto(nombre);
                         Console.WriteLine("Producto agregado correctamente.");
                     }
                     catch (Exception ex)
@@ -82,6 +85,7 @@ class Program
                     // Solicita el nombre del producto a buscar
                     Console.Write("Nombre del producto a buscar: ");
                     var nombreBusqueda = Console.ReadLine();
+                    // Verifica si el nombre del producto no está vacío (Programación defensiva)
                     if (string.IsNullOrWhiteSpace(nombreBusqueda))
                     {
                         Console.WriteLine("El nombre del producto no puede estar vacío.");

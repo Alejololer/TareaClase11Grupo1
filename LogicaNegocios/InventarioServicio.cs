@@ -10,7 +10,7 @@ public class InventarioServicio
     // Constructor de la clase InventarioServicio
     public InventarioServicio(InventarioRepositorio repositorio)
     {
-        // Validación defensiva para asegurar que el repositorio no sea nulo
+        // Programación defensiva: Validación para asegurar que el repositorio no sea nulo
         if (repositorio == null) throw new ArgumentNullException(nameof(repositorio));
         this.repositorio = repositorio;
     }
@@ -18,25 +18,25 @@ public class InventarioServicio
     // Método para agregar un producto al inventario
     public void AgregarProducto(string nombre, decimal precio, int cantidad)
     {
-        // Validaciones defensivas
+        // Programación defensiva: Validaciones para asegurar que los parámetros sean válidos
         if (string.IsNullOrWhiteSpace(nombre)) throw new ArgumentException("El nombre no puede estar vacío.");
         if (precio <= 0) throw new ArgumentException("El precio debe ser mayor a cero.");
         if (cantidad < 0) throw new ArgumentException("La cantidad no puede ser negativa.");
 
-        // Precondición: asegurar que el producto no exista ya en el repositorio
+        // Diseño por contrato: Precondición para asegurar que el producto no exista ya en el repositorio
         Debug.Assert(repositorio.BuscarPorNombre(nombre) == null, "El producto ya existe.");
 
         // Agregar producto al repositorio
         repositorio.AgregarProducto(new Producto(nombre, precio, cantidad));
 
-        // Postcondición: asegurar que el producto fue agregado correctamente
+        // Diseño por contrato: Postcondición para asegurar que el producto fue agregado correctamente
         Debug.Assert(repositorio.BuscarPorNombre(nombre) != null, "El producto no fue agregado correctamente.");
     }
 
     // Método para listar todos los productos del inventario
     public void ListarProductos()
     {
-        // Validación defensiva para asegurar que el repositorio no sea nulo
+        // Programación defensiva: Validación para asegurar que el repositorio no sea nulo
         if (repositorio == null) throw new InvalidOperationException("El repositorio no está inicializado.");
 
         // Obtener todos los productos del repositorio
@@ -59,7 +59,7 @@ public class InventarioServicio
     // Método para buscar un producto por su nombre
     public void BuscarProducto(string nombre)
     {
-        // Validación defensiva para asegurar que el nombre no sea nulo o vacío
+        // Programación defensiva: Validación para asegurar que el nombre no sea nulo o vacío
         if (string.IsNullOrWhiteSpace(nombre)) throw new ArgumentException("El nombre no puede estar vacío.");
 
         // Buscar el producto en el repositorio por su nombre
